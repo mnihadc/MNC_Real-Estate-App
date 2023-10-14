@@ -4,6 +4,7 @@ function About() {
   return (
     <div>
         about 
+        hjgffjhlhfflgkjhdtyf
     </div>
   )
 }
