@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import SignIn from './Pages/SignIn';
 import SignOut from './Pages/SignOut';
+import SignUp from './Pages/SignUp';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
     <Header />
     <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/sign-up' element={<SignUp/>} />
       <Route path='/sign-in' element={<SignIn />} />
       <Route path='/sign-out' element={<SignOut />} />
       <Route path='/about' element={<About />} />
