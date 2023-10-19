@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
+import PrivateRoute from './Components/PrivateRoute';
 import About from './Pages/About';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
@@ -13,11 +14,13 @@ function App() {
     <Header />
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/sign-up' element={<SignUp/>} />
+      <Route path='/sign-up' element={<SignUp />} />
       <Route path='/sign-in' element={<SignIn />} />
       <Route path='/sign-out' element={<SignOut />} />
       <Route path='/about' element={<About />} />
-      <Route path='/profile' element={<Profile />} />
+      <Route element={<PrivateRoute />}>
+        <Route path='/profile' element={<Profile />} />
+      </Route>
     </Routes>
   </BrowserRouter>
 }
