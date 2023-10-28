@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 
 export const test = (req, res) => {
     res.json({
-        message: 'hello i am nihad c my wife naja shakir'
+        message: 'hello i am nihad c'
     });
 };
 
