@@ -17,8 +17,9 @@ function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [showListingError, setShowListingError] = useState(false);
+  const [showListingError, setShowListingError] = useState(null);
   const [userListings, setUserListings] = useState([]);
+  const [showListingLoading, setShowListingLoading] = useState(false);
   const dispatch = useDispatch();
 
   console.log(formData);
@@ -113,23 +114,41 @@ function Profile() {
   }
   const handleShowListings = async () => {
     try {
-      setShowListingError(false);
+      setShowListingLoading(true);
+      setShowListingError(null);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
+      
       if (data.success === false) {
-        setShowListingError(true);
+        setShowListingLoading(false);
+        setShowListingError(data.message);
         return;
       }
+      setShowListingLoading(false);
       setUserListings(data);
     } catch (error) {
-      setShowListingError(true);
+      setShowListingLoading(false);
+      setShowListingError(error.message);
+    }
+  }
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+      }
+      setUserListings((prev) => prev.filter((listing) => listing._id !== listingId));
+    } catch (error) {
+      console.log(error.message);
     }
   }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-
         <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/' />
         <img onClick={() => fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt="profile" className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2' />
         <p className='text-sm self-center'>
@@ -158,8 +177,8 @@ function Profile() {
         <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign-Out</span>
       </div>
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='bg-red-700 mt-5'>{updateSuccess ? 'User is updated successfuly' : ''}</p>
-      <button onClick={handleShowListings} className='text-green-700 w-full'>Show Listings</button>
+      <p className='text-red-700 mt-5'>{updateSuccess ? 'User is updated successfuly' : ''}</p>
+      <button onClick={handleShowListings} className='text-green-700 w-full'>{showListingLoading ? 'Loading...' : 'Show Listings'}</button>
       <p className='text-red-700 mt-5'>{showListingError ? 'Error show listings' : ''}</p>
       {userListings &&
         userListings.length > 0 &&
@@ -174,7 +193,7 @@ function Profile() {
                 <p>{listing.name}</p>
               </Link>
               <div className='flex flex-col items-center'>
-                <button className='text-red-700 uppercase'>Delete</button>
+                <button onClick={() => handleListingDelete(listing._id)} className='text-red-700 uppercase'>Delete</button>
                 <button className='text-green-700 uppercase'>edit</button>
               </div>
             </div>
