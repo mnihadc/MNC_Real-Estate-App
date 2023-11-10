@@ -118,7 +118,7 @@ function Profile() {
       setShowListingError(null);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
-      
+
       if (data.success === false) {
         setShowListingLoading(false);
         setShowListingError(data.message);
@@ -177,7 +177,7 @@ function Profile() {
         <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign-Out</span>
       </div>
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='text-red-700 mt-5'>{updateSuccess ? 'User is updated successfuly' : ''}</p>
+      <p className='text-green-700 mt-5 font-semibold'>{updateSuccess ? 'User is updated successfuly' : ''}</p>
       <button onClick={handleShowListings} className='text-green-700 w-full'>{showListingLoading ? 'Loading...' : 'Show Listings'}</button>
       <p className='text-red-700 mt-5'>{showListingError ? 'Error show listings' : ''}</p>
       {userListings &&
