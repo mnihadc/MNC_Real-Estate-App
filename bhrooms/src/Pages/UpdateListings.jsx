@@ -162,7 +162,7 @@ function UpdateListings() {
                         value={formData.name}
                     />
                     <textarea
-                        type='text'
+                        type='text'     
                         placeholder='Description'
                         className='border p-3 rounded-lg'
                         id='description'
@@ -246,7 +246,9 @@ function UpdateListings() {
                             />
                             <div className='flex flex-col items-center'>
                                 <p>Regular price</p>
-                                <span className='text-xs'>($ / month)</span>
+                                {formData.type === 'rent' && (
+                                    <span className='text-xs'>($ / month)</span>
+                                )}
                             </div>
                         </div>
                         {formData.offer && (
@@ -263,11 +265,12 @@ function UpdateListings() {
                                 />
                                 <div className='flex flex-col items-center'>
                                     <p>Discounted price</p>
-                                    <span className='text-xs'>($ / month)</span>
+                                    {formData.type === 'rent' && (
+                                        <span className='text-xs'>($ / month)</span>
+                                    )}
                                 </div>
                             </div>
                         )}
-
                     </div>
                 </div>
                 <div className="flex flex-col flex-1 gap-4">
@@ -290,10 +293,8 @@ function UpdateListings() {
                     <button disabled={loading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>{loading ? 'Updating ...' : 'Update Listing'}</button>
                     {error && <p className='text-red-700 text-sm'>{error}</p>}
                 </div>
-
             </form>
         </main>
     );
 }
-
 export default UpdateListings
