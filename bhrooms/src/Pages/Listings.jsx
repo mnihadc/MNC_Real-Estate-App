@@ -28,7 +28,6 @@ function Listings() {
 
     useEffect(() => {
         const fetchListing = async () => {
-
             try {
                 setLoading(true);
                 const res = await fetch(`/api/listing/get/${params.listingId}`);
@@ -80,9 +79,12 @@ function Listings() {
                             {listing.name} - ${' '}
                             {listing.offer
                                 ? listing.discountPrice.toLocaleString('en-US')
-                                : listing.reqularPrice.toLocaleString('en-US')
+                                : listing.regularPrice.toLocaleString('en-US')
                             }
                             {listing.type === 'rent' && '/ month'}
+                            {listing.offer && <span className='text-gray-700' style={{ fontSize: '18px', marginLeft: '5px' }}>
+                                -OFF
+                            </span>}
                         </p>
                         <p className='flex items-center mt-6 gap-2 text-slate-600 text-sm'>
                             <FaMapMarkerAlt className='text-green-700' />
@@ -95,16 +97,19 @@ function Listings() {
                             {listing.offer && (
                                 <p className='bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
                                     ${+listing.regularPrice - +listing.discountPrice}
+                                    {listing.type === 'rent' && ' / month'}
                                 </p>
                             )}
+                            {listing.offer && <p className='text-gray-700' style={{ textDecoration: 'line-through', textAlign: 'center', fontSize: '20px' }}>{'$'}{listing.regularPrice}</p>}
+
                         </div>
                         <p
                             className='text-slate-800 description-paragraph'
                             style={{
-                                maxWidth: '100%', /* Adjust the maximum width as needed */
-                                margin: '0 auto', /* Center the paragraph */
-                                fontSize: '16px', /* Adjust the font size as needed */
-                                lineHeight: '1.5', /* Adjust the line height as needed */
+                                maxWidth: '100%',
+                                margin: '0 auto',
+                                fontSize: '16px',
+                                lineHeight: '1.5',
                             }}
                         >
                             <span className='font-semibold text-black'>Description - </span>
