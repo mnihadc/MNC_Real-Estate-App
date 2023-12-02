@@ -14,8 +14,11 @@ function ListingItem({ listing }) {
                         <p className='text-sm text-gray-600 truncate w-full'>{listing.address}</p>
                     </div>
                     <p className='text-sm text-gray-600 line-clamp-2'>{listing.description}</p>
-                    <p className='text-slate-500 mt-2 font-semibold'>${' '}{listing.offer ? listing.discountPrice.toLocaleString('en-US') : listing.regularPrice.toLocaleString('en-US')} {listing.type === 'rent' && '/ month'} <span className='uppercase items-center text-slate-600'>-off</span></p>
-                    <div className='text-slate-700 flex gap-4'>
+                    <div className='flex gap-1 items-center'>
+                        <p className='text-slate-500 mt-2 font-semibold'>${' '} ${+listing.regularPrice - +listing.discountPrice}{listing.type === 'rent' && '/ month'} <span className='uppercase items-center text-slate-600'>-off</span></p>
+                        {listing.offer && <p className='text-gray-700 items-center' style={{ textDecoration: 'line-through', fontSize: '13px' }}>{'$'}{listing.regularPrice}</p>}
+                    </div>
+                    <div className='text-slate-700 flex gap-4 justify-center'>
                         <div className='font-bold text-xs' >{listing.bedrooms > 1 ? `${listing.bathrooms} beds` : `${listing.bedrooms} bed`}</div>
                         <div className='font-bold text-xs' >{listing.bathrooms > 1 ? `${listing.bathrooms} baths` : `${listing.bathrooms} bath`}</div>
                     </div>

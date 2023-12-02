@@ -16,8 +16,21 @@ function Search() {
     });
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
+    const [showMore, setShowMore] = useState(false);
     const navigate = useNavigate();
-    console.log(listings);
+    const onShowMoreClick = async () => {
+        const numberOfListings = listings.length;
+        const startIndex = numberOfListings;
+        const urlParams = new URLSearchParams(location.search)
+        urlParams.set('startIndex', startIndex);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get/?${searchQuery}`);
+        const data = await res.json();
+        if (data.length < 9) {
+            setShowMore(false);
+        }
+        setListings([...listings, ...data])
+    }
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromUrl = urlParams.get('searchTerm');
@@ -44,12 +57,16 @@ function Search() {
             try {
                 const searchQuery = urlParams.toString();
                 const res = await fetch(`/api/listing/get?${searchQuery}`);
-
                 if (!res.ok) {
                     throw new Error(`API request failed with status ${res.status}`);
                 }
-
                 const data = await res.json();
+                if (data.length > 8) {
+                    setShowMore(true);
+                } else {
+                    setShowMore(false)
+                }
+
                 setListings(data);
             } catch (error) {
                 console.error('Error fetching listings:', error);
@@ -154,8 +171,13 @@ function Search() {
                     {loading && (
                         <p className='text-xl text-slate-700 text-center w-full'>Loading...</p>
                     )}
-                    {!loading && listings && listings.map((listing) =>
-                        <ListingItem key={listing._id} listing={listing} />)}
+                    {!loading && listings && listings.map((listing) => (
+                        <ListingItem key={listing._id} listing={listing} />))}
+                    {
+                        showMore && (
+                            <button onClick={() => { onShowMoreClick(); }} className='text-green-700 hover:underline p-7 text-center w-full'>Show more</button>
+                        )
+                    }
                 </div>
             </div>
         </div>
