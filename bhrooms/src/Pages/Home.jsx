@@ -7,6 +7,7 @@ import 'swiper/css/bundle';
 import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
 import ListingItem from '../Components/ListingItem';
+import Footer from '../Components/Footer';
 
 function Home() {
   const [offerListings, setOfferListings] = useState([]);
@@ -17,7 +18,7 @@ function Home() {
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?offer=true&limit=4')
+        const res = await fetch('/api/listing/get?offer=true&limit=6')
         const data = await res.json();
         setOfferListings(data);
         fetchRentListings();
@@ -27,7 +28,7 @@ function Home() {
     }
     const fetchRentListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=rent&limit=4')
+        const res = await fetch('/api/listing/get?type=rent&limit=6')
         const data = await res.json();
         setRentListings(data);
         fetchSaleListings();
@@ -37,7 +38,7 @@ function Home() {
     }
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=sale&limit=4')
+        const res = await fetch('/api/listing/get?type=sale&limit=6')
         const data = await res.json();
         setSaleListings(data);
       } catch (error) {
@@ -133,7 +134,7 @@ function Home() {
           </div>
         )}
       </div>
-
+      <Footer />
     </div>
   )
 }

@@ -180,6 +180,7 @@ function Profile() {
       <p className='text-green-700 mt-5 font-semibold'>{updateSuccess ? 'User is updated successfuly' : ''}</p>
       <button onClick={handleShowListings} className='text-green-700 w-full'>{showListingLoading ? 'Loading...' : 'Show Listings'}</button>
       <p className='text-red-700 mt-5'>{showListingError ? 'Error show listings' : ''}</p>
+
       {userListings &&
         userListings.length > 0 &&
         <div className='flex flex-col gap-4'>
